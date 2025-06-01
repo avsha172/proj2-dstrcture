@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.ToolTipManager;
 
 /**
@@ -79,6 +82,7 @@ public class FibonacciHeap
 	 * Return the number of links.
 	 *
 	 */
+	
 	public int deleteMin()
 	{
 		// Edge case 1: Heap is empty
@@ -108,11 +112,13 @@ public class FibonacciHeap
 
 	        HeapNode child = oldMin.child;
 	        HeapNode start = child;
+			int i = 0;
 	        do {
+				i++;
 	            child.parent = null;
 	            child = child.next;
-				totalCuts++; // Count the cut when moving child to root list
-	        } while (child != start);
+	        } while (child != start && i<oldMin.rank);
+			totalCuts += oldMin.rank; // Count the cuts made when removing children
 	        // Splice children into root list
 	        if (this.firstNode != null) {
 	            linkNodeLists(this.firstNode, oldMin.child);
@@ -158,8 +164,9 @@ public class FibonacciHeap
 	        int d = x.rank;
 	        while (bucket[d] != null) {
 	            HeapNode y = bucket[d];
-	            if (x == y) {
+	            if (x.key == y.key) {
 	                // Defensive: break to avoid infinite loop and corruption
+					System.err.println("whoooooasdas");
 	                break;
 	            }
 	            if (x.key > y.key) {
@@ -386,6 +393,21 @@ public class FibonacciHeap
 	 * Class implementing a node in a Fibonacci Heap.
 	 *  
 	 */
+	private static void printLevel(FibonacciHeap.HeapNode node) {
+        if (node == null) {
+            System.out.println("[empty level]");
+            return;
+        }
+        List<String> nodes = new ArrayList<>();
+        FibonacciHeap.HeapNode curr = node;
+        do {
+            String s = "(key=" + curr.key + ", prev=" + (curr.prev != null ? curr.prev.key : "null") + ", next=" + (curr.next != null ? curr.next.key : "null")+")";
+            nodes.add(s);
+            curr = curr.next;
+        } while (curr != node);
+        // System.out.println(nodes);
+    }
+
 	public static class HeapNode{
 		public int key;
 		public String info;
@@ -429,3 +451,5 @@ public class FibonacciHeap
 	    return this.firstNode;
 	}
 }
+
+
