@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.ToolTipManager;
@@ -12,7 +13,6 @@ import javax.swing.ToolTipManager;
 public class FibonacciHeap
 {
 	private HeapNode min;
-	private HeapNode firstNode;
 	private int c;
 	private int size;
 	private int numTrees;
@@ -30,13 +30,6 @@ public class FibonacciHeap
 		this.c = c;
 		// should be replaced by student code
 	}
-
-	public FibonacciHeap(int c, int key, String info)
-	{
-		this.c = c;
-		initFirstNode(key, info);
-		// should be replaced by student code
-	}
 	/**
 	 * 
 	 * pre: key > 0
@@ -46,24 +39,24 @@ public class FibonacciHeap
 	 */
 	public HeapNode insert(int key, String info) 
 	{    
-		if (this.size == 0) {
-			initFirstNode(key, info);
-			return this.firstNode;
+		HeapNode node = new HeapNode(key, info);
+		if (min == null) {
+			min = node;
+			node.next = node;
+			node.prev = node;
 		}
-		
-		FibonacciHeap heap2 = new FibonacciHeap(c, key, info);
-		meld(heap2);
-		assert(heap2.firstNode == this.firstNode.prev);
-		return this.firstNode.prev; // should be replaced by student code
-	}
-
-	private void initFirstNode(int key, String info) {
-		this.firstNode = new HeapNode(key, info, null, null);
-		this.min = this.firstNode;
-		this.firstNode.next = this.firstNode;
-		this.firstNode.prev = this.firstNode;
-		this.size = 1;
-		this.numTrees = 1;
+		else{
+			node.next = min;
+			node.prev = min.prev;
+			min.prev.next = node;
+			min.prev = node;
+			if(node.key < min.key) {
+				min = node; // Update min if the new node has a smaller key
+			}
+		}
+		size++;
+		numTrees++;
+		return node;
 	}
 
 	/**
@@ -86,125 +79,147 @@ public class FibonacciHeap
 	public int deleteMin()
 	{
 		// Edge case 1: Heap is empty
-	    if (this.min == null) {
+	    if (min == null) {
+			if(size != 0){
+				System.err.println("heap should be empty but it actually isnt");
+			}
 	        return 0;
 	    }
-
-	    HeapNode oldMin = this.min;
 		size--;
-
-	    // Remove min from root list
-
-	    // If min is the first node in the root list, update firstNode
-	    if (this.firstNode == oldMin) {
-			// System.out.println("firstNode is oldMin"+min.key);
-			// Edge case 2: min is the only node in the root list (but may have children)
-	        if (oldMin.next == oldMin) {
-	            this.firstNode = null;
-	        } else {
-	            this.firstNode = oldMin.next;
-	        }
+		if (this.size == 0) {
+	        min = null;
+	        numTrees = 0;
+			return 0;
 	    }
-		removeNode(oldMin);
 
+	    HeapNode oldMin = min;
+		removeNode(min);
+	    // Remove min from root list
 	    // If min has children, add them to root list
-	    if (oldMin.child != null) {
+	    if (oldMin.child != null) 
+		{
 
 	        HeapNode child = oldMin.child;
 	        HeapNode start = child;
+			// HeapNode[] children = new HeapNode[oldMin.rank];
 			int i = 0;
+
 	        do {
-				i++;
-	            child.parent = null;
+				// children[i] = child;
+				if(child.parent == null){
+					System.err.println("child.parent is null, something went wrong");
+					break;
+				}
+				child.parent = null;
+				
 	            child = child.next;
+				i++;
 	        } while (child != start && i<oldMin.rank);
+			if(child != start) {
+				System.err.println("child is not equal to start, something went wrong");
+			}
+	        // Add children to root list
+			// more than one root node in the heap
+	        if(numTrees>1){
+				min = oldMin.next;
+				if(min == oldMin) {
+					System.err.println("min is equal to oldMin, something went wrong very bad");
+				}
+				linkNodeLists(min, start);
+			}
+			else{
+				min = start; // If this was the only root node, set min to the first child
+			}
+			numTrees += oldMin.rank-1; // Increase numTrees by the number of children added
 			totalCuts += oldMin.rank; // Count the cuts made when removing children
-	        // Splice children into root list
-	        if (this.firstNode != null) {
-	            linkNodeLists(this.firstNode, oldMin.child);
-	        } else {
-	            this.firstNode = oldMin.child;
-	        }
+	        oldMin.child = null; // Clear the child pointer of oldMin
+	        oldMin.rank = 0; // Reset rank since we are removing children
+		}
+		else // has no children
+		{
+			numTrees--;
+	        min = oldMin.next; // Set min to the next node in the root list
+			if(oldMin == min.next && oldMin == min.prev && min.next == min) {
+				System.err.println("oldMin is equal to min.next, something went wrong");
+			}
 	    }
 
 		
 	    // Set new min (will be fixed in consolidation)
 	    // If heap is now empty, set min to null
-	    if (this.size == 0) {
-	        this.min = null;
-	        this.firstNode = null;
-	        this.numTrees = 0;
-			return 0;
-	    }
-		else
-		{
-			this.min = this.firstNode;
-			int links = consolidate();
-			totalLinks += links;
-	    	return links;
+		int links = consolidate2();
+		totalLinks += links;
+		return links;
+	}
+
+	public int consolidate2() {
+		int maxDegree = (int) Math.ceil(2 * Math.log(size) + 2);
+		// we will not have a runtimes error of buffer overflow, because its not to hard to prove that the max degree is at most 8*log(n)+2 for every c, in fact we kind of prove in the theortical part where we reach the recurrence relation a_n=a_n-1+a_n-c and we proved max degree is smaller than a_(n+2) and a(n+2) is big Omeaga of b^(n+2) for some 2>b>1. even though i am pretty sure we can use 2*log(n)+2, i will use 8*log(n)+2 to be on the safe side
+		int links = 0;
+		// Step 1: Collect all roots into a list before mutating the root list
+		HeapNode[] rootNodes = new HeapNode[numTrees];
+		HeapNode curr = min;
+		for (int i = 0; i < numTrees; i++) {
+			rootNodes[i] = curr;
+			curr = curr.next;
 		}
+		if(curr != min) {
+			System.err.println("curr is not equal to min, something went wrong");
+		}
+		// Step 2: Consolidate using the collected roots
+		HeapNode[] bucket = new HeapNode[maxDegree];
+		for (HeapNode node : rootNodes) {
+			curr = node;
+			int d = curr.rank;
+			if(bucket[d] == curr) {
+				break;
+			}
+			while (bucket[d] != null) {
+				HeapNode y = bucket[d];
+				if (curr.key > y.key) {
+					HeapNode temp = curr;
+					curr = y;
+					y = temp;
+				}
+				removeNode(y);
+				curr.addChild(y);
+				bucket[d] = null;
+				d++;
+				links++;
+			}
+			bucket[d] = curr;
+		}
+		// Step 3: Rebuild root list & discover new min
+		numTrees = 0;
+		min = null;
+		HeapNode first = null, last = null;
+		for (HeapNode n : bucket) if (n != null) {
+			if (min == null || n.key < min.key) min = n;
+			if (first == null) {
+				first = n;
+				last = n;
+				n.next = n.prev = n;
+			} else {
+				// Insert n after last
+				n.prev = last;
+				n.next = first;
+				last.next = n;
+				first.prev = n;
+				last = n;
+			}
+			numTrees++;
+		}
+		// Fix min pointer if needed
+		if (min != null) {
+			// Ensure min points to the correct node in the new root list
+			HeapNode check = min;
+			for (int i = 0; i < numTrees; i++) {
+				if (check == null) break;
+				check = check.next;
+			}
+		}
+		return links;
 	}
-
-	private int consolidate() {
-
-	    // Step 1: Collect all roots into a list to avoid issues with root list mutation
-	    java.util.List<HeapNode> roots = new java.util.ArrayList<>();
-	    if (firstNode != null) {
-	        HeapNode curr = firstNode;
-	        do {
-	            roots.add(curr);
-	            curr = curr.next;
-	        } while (curr != firstNode);
-	    }
-		int maxDegree = (int) Math.ceil(c*Math.log(size) + 2);
-	    HeapNode[] bucket = new HeapNode[maxDegree];
-	    int links = 0;
-	    // Step 2: Consolidate using the collected roots
-	    for (HeapNode x : roots) {
-	        int d = x.rank;
-	        while (bucket[d] != null) {
-	            HeapNode y = bucket[d];
-	            if (x.key == y.key) {
-	                // Defensive: break to avoid infinite loop and corruption
-					System.err.println("whoooooasdas");
-	                break;
-	            }
-	            if (x.key > y.key) {
-	                HeapNode temp = x;
-	                x = y;
-	                y = temp;
-	            }
-	            // Remove y from root list
-	            removeNode(y);
-	            x.addChild(y);
-	            bucket[d] = null;
-	            d++;
-	            links++;
-	        }
-	        bucket[d] = x;
-	    }
-
-	    // Step 3: Rebuild root list & discover new min
-	    firstNode = null;
-	    min = null;
-	    numTrees = 0;
-	    for (HeapNode n : bucket) if (n != null) {
-	        if (firstNode == null) {
-	            firstNode = n;
-	            n.next = n.prev = n;
-	        } else {
-	            HeapNode last = firstNode.prev;
-	            last.next = n;
-	            n.prev = last;
-	            n.next = firstNode;
-	            firstNode.prev = n;
-	        }
-	        if (min == null || n.key < min.key) min = n;
-	        numTrees++;
-	    }
-	    return links;
-	}
-
 	private void removeNode(HeapNode y) {
 		y.prev.next = y.next;
 		y.next.prev = y.prev;
@@ -230,6 +245,7 @@ public class FibonacciHeap
 		if(x.parent == null) {
 			// x is a root node
 			x.key -= diff;
+			
 			if (x.key < min.key) {
 				min = x; // Update min if necessary
 			}
@@ -240,10 +256,10 @@ public class FibonacciHeap
 			x.key -= diff;
 			if (x.key < x.parent.key) {
 				// Cut x from its parent
+				int cuts = cutNode(x);
 				if (x.key < min.key) {
 					min = x; // Update min if necessary
 				}
-				int cuts = cutNode(x);
 				return cuts; // Return the number of cuts made
 			}
 			return 0; // No cuts made
@@ -269,10 +285,10 @@ public class FibonacciHeap
 		parent.rank--;
 		parent.lostChildren++;
 		// Add x to the root list
-		x.prev = firstNode.prev;
-		x.next = firstNode;
-		firstNode.prev.next = x;
-		firstNode.prev = x;
+		x.next = x;
+		x.prev = x;
+		linkNodeLists(min, x);
+		numTrees++;
 		x.parent = null; // Remove parent reference BEFORE possible recursive cut
 		if (parent.lostChildren >= c) {
 			cuts += cutNode(parent);
@@ -287,8 +303,9 @@ public class FibonacciHeap
 	 *
 	 */
 	public int delete(HeapNode x) 
-	{    
-		decreaseKey(x, x.key);
+	{   
+		HeapNode par = x.parent;
+		int cuts = decreaseKey(x, x.key);
 		int links = deleteMin();
 		return links;
 	}
@@ -326,30 +343,31 @@ public class FibonacciHeap
 		if(heap2.Invalidate == true){
 			return;
 		}
-		if (heap2 == null || heap2.firstNode == null) {
+		if (heap2 == null || heap2.min == null) {
 			return; // Nothing to meld
 		}
 		if(size == 0) {
-			this.firstNode = heap2.firstNode;
+			this.min = heap2.min;
 			this.min = heap2.min;
 			this.size = heap2.size;
 			this.numTrees = heap2.numTrees;
 			heap2.InvalidateHeap();
 			return;
 		}
-		linkNodeLists(this.firstNode, heap2.firstNode);
+		linkNodeLists(this.min, heap2.min);
 		this.size += heap2.size;
 		this.numTrees += heap2.numTrees;
 		if(this.min.key > heap2.min.key){
 			this.min = heap2.min;
 		}
-
+		this.totalCuts += heap2.totalCuts;
+		this.totalLinks += heap2.totalLinks;
 		// Invalidate heap2 after melding
 		heap2.InvalidateHeap();
 	}
 	private void InvalidateHeap() {
 		this.Invalidate = true;
-		this.firstNode = null;
+		this.min = null;
 		this.min = null;
 		this.size = 0;
 		this.numTrees = 0;
@@ -389,66 +407,60 @@ public class FibonacciHeap
 		return numTrees; // should be replaced by student code
 	}
 
+	private void display(HeapNode c) {
+    System.out.print("(");
+    if (c == null) {
+      System.out.print(")");
+      return;
+    } else {
+      HeapNode temp = c;
+      do {
+        System.out.print(temp.key);
+        HeapNode k = temp.child;
+        display(k);
+        System.out.print("->");
+        temp = temp.next;
+      } while (temp != c);
+      System.out.print(")");
+    }
+  }
+
 	/**
 	 * Class implementing a node in a Fibonacci Heap.
 	 *  
 	 */
-	private static void printLevel(FibonacciHeap.HeapNode node) {
-        if (node == null) {
-            System.out.println("[empty level]");
-            return;
-        }
-        List<String> nodes = new ArrayList<>();
-        FibonacciHeap.HeapNode curr = node;
-        do {
-            String s = "(key=" + curr.key + ", prev=" + (curr.prev != null ? curr.prev.key : "null") + ", next=" + (curr.next != null ? curr.next.key : "null")+")";
-            nodes.add(s);
-            curr = curr.next;
-        } while (curr != node);
-        // System.out.println(nodes);
-    }
-
 	public static class HeapNode{
 		public int key;
 		public String info;
-		public HeapNode child;
+		public HeapNode child = null; // Child node, null if it has no children
 		public HeapNode next;
 		public HeapNode prev;
-		public HeapNode parent;
+		public HeapNode parent = null; // Parent node, null if it's a root node
 		public int rank=0;
 		public int lostChildren = 0;
-		public HeapNode(int key, String info, HeapNode prev, HeapNode parent){
+		public HeapNode(int key, String info){
 			this.key = key;
 			this.info = info;
-			this.prev = prev;
-			this.parent = parent;
+			prev = this;
+			next = this; // Point to itself initially
 		}
 		public void addChild(HeapNode newChild) {
-			if (this.child == null) {
-				this.child = newChild;
-				newChild.next = newChild; // Point to itself
-				newChild.prev = newChild; // Point to itself
+			newChild.next = newChild; // Point to itself
+			newChild.prev = newChild; // Point to itself
+			if (child == null) {
+				child = newChild;
 			} else {
 				// Link the new child to the existing child
-				newChild.next = newChild;
-				newChild.prev = newChild;
-				linkNodeLists(this.child, newChild);
-
-
-				// HeapNode lastChild = this.child.prev;
-				// lastChild.next = newChild;
-				// newChild.prev = lastChild;
-				// newChild.next = this.child;
-				// this.child.prev = newChild;
+				linkNodeLists(child, newChild);
 			}
 			newChild.parent = this; // Set parent of the new child
 			this.rank++; // Increase rank as we added a child
 		}
 	}
 
-	// Add a package-private getter for firstNode for testing purposes
+	// Add a package-private getter for min for testing purposes
 	HeapNode getFirstNode() {
-	    return this.firstNode;
+	    return this.min;
 	}
 }
 
