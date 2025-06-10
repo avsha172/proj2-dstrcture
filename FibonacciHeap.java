@@ -209,15 +209,6 @@ public class FibonacciHeap
 			}
 			numTrees++;
 		}
-		// Fix min pointer if needed
-		if (min != null) {
-			// Ensure min points to the correct node in the new root list
-			HeapNode check = min;
-			for (int i = 0; i < numTrees; i++) {
-				if (check == null) break;
-				check = check.next;
-			}
-		}
 		return links;
 	}
 	private void removeNode(HeapNode y) {
@@ -318,7 +309,7 @@ public class FibonacciHeap
 	 */
 	public int totalLinks()
 	{
-		return totalLinks; // should be replaced by student code
+		return totalLinks;
 	}
 
 
@@ -329,7 +320,7 @@ public class FibonacciHeap
 	 */
 	public int totalCuts()
 	{
-		return totalCuts; // should be replaced by student code
+		return totalCuts;
 	}
 
 
@@ -344,6 +335,7 @@ public class FibonacciHeap
 			return;
 		}
 		if (heap2 == null || heap2.min == null) {
+			heap2.InvalidateHeap();
 			return; // Nothing to meld
 		}
 		if(size == 0) {

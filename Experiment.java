@@ -51,7 +51,7 @@ public class Experiment {
 
     public static void main(String[] args) {
         int[] cLst = {2,3,4,10,20,100,1000,5000};
-        int numRuns = 20;
+        int numRuns = 1;
         List<ExpTableRow> exp1Rows = new ArrayList<>();
         List<ExpTableRow> exp2Rows = new ArrayList<>();
         // Run exp1 for all c
