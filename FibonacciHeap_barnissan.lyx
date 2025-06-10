@@ -85,6 +85,876 @@
 \begin_body
 
 \begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="11" columns="3">
+<features tabularvalignment="middle">
+<column alignment="right" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="right" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+פעולה
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+זמן ריצה במקרה הגרוע
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+זמן ריצה לשיעורין
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $insert(k,info)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $O(1)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $O(1)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $findMin()$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $O(1)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $O(1)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $deleteMin()$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $O(n)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $O(log(n))$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $decreaseKey(x,d)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $O(n)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $O(1)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $delete(x)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $O(n)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $O(log(n))$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $totalLinks()$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $O(1)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $O(1)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $totalCuts()$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $O(1)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $O(1)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $meld(heap2)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $O(1)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $O(1)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $size()$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $O(1)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $O(1)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $numTrees()$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $O(1)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $O(1)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+חלק תאורטי:
+\end_layout
+
+\begin_layout Standard
+א.
+\end_layout
+
+\begin_layout Standard
+הלמה תהיה אותו דבר רק שדרגת 
+\begin_inset Formula $y_{i}$
+\end_inset
+
+ תהיה לכל הפחות 
+\begin_inset Formula $i-c$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+ההוכחה של הלמה:
+\end_layout
+
+\begin_layout Standard
+יהיה 
+\begin_inset Formula $x$
+\end_inset
+
+ עם 
+\begin_inset Formula $n$
+\end_inset
+
+ בנים 
+\begin_inset Formula $y_{1},y_{2}...,y_{n}$
+\end_inset
+
+ יהיה 
+\begin_inset Formula $y_{i}$
+\end_inset
+
+, אז אנחנו יודעים ש
+\begin_inset Formula $y_{i}$
+\end_inset
+
+ התאחד עם 
+\begin_inset Formula $x$
+\end_inset
+
+ כאשר ל
+\begin_inset Formula $x$
+\end_inset
+
+ היה 
+\begin_inset Formula $i-1$
+\end_inset
+
+ ילדים, 
+\begin_inset Formula $y_{1},...y_{i-1}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+אז נובע שגם ל
+\begin_inset Formula $y_{i}$
+\end_inset
+
+ היו 
+\begin_inset Formula $i-1$
+\end_inset
+
+ ילדים כאשר איחדנו אותו עם 
+\begin_inset Formula $x$
+\end_inset
+
+, ואז מהגדרת 
+\begin_inset Formula $cascading\ cut$
+\end_inset
+
+ נובע שלכל היותר יכולנו לחתוך ל
+\begin_inset Formula $y_{i}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+לכל היותר 
+\begin_inset Formula $c-1$
+\end_inset
+
+ ילדים בלי ש
+\begin_inset Formula $cascading\ cut$
+\end_inset
+
+ גם יחתוך אותו, ולכן ל
+\begin_inset Formula $y_{i}$
+\end_inset
+
+ יש לכל הפחות 
+\begin_inset Formula $i-1-(c-1)$
+\end_inset
+
+ ילדים, שזה 
+\begin_inset Formula $i-c$
+\end_inset
+
+ וזו בדיוק הטענה שרצינו להוכיח.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+ב.
+\end_layout
+
+\begin_layout Standard
+נשתמש בפולינום האופיני של נוסחת הנסיגה, אז 
+\begin_inset Formula $\lambda^{n}-\lambda^{n-1}-\lambda^{n-k}=0\Leftarrow a_{n}-a_{n-1}-a_{n-k}=0$
+\end_inset
+
+, 
+\begin_inset Formula $\lambda^{k}-\lambda^{k-1}-1=0$
+\end_inset
+
+ אז יש 
+\begin_inset Formula $k$
+\end_inset
+
+ פתרונות לפולינום.
+\end_layout
+
+\begin_layout Standard
+נשים לב שאחד הפתרונות האלה גדול מ
+\begin_inset Formula $1$
+\end_inset
+
+ ממשפט ערך הבניים של קושי, כי 
+\begin_inset Formula $1^{k}-1^{k-1}-1=-1\leq0$
+\end_inset
+
+ אבל 
+\begin_inset Formula $2^{k}-2^{k-1}-1=2^{k-1}-1\geq0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+לכן יש שורש ב
+\begin_inset Formula $[2,1)$
+\end_inset
+
+.
+ נסמן את השורש הזה ב
+\begin_inset Formula $\lambda_{r}$
+\end_inset
+
+, נשים לב שגם זה השורש היחיד שגדול מ
+\begin_inset Formula $1$
+\end_inset
+
+, אפשר לראות זאת מהעבודה ש עבור 
+\begin_inset Formula $\lambda>1$
+\end_inset
+
+ הנגזרת
+\end_layout
+
+\begin_layout Standard
+של הפולינום חיובית ממש לכל 
+\begin_inset Formula $\lambda$
+\end_inset
+
+, לכן נחצה את 
+\begin_inset Formula $0$
+\end_inset
+
+ רק פעם אחת.
+ אז עבור כל סדרה 
+\begin_inset Formula $a_{n}$
+\end_inset
+
+ שמשלב מסויים גדלה ממש חייב להיות שהמקדם של 
+\begin_inset Formula $\lambda_{r}$
+\end_inset
+
+, 
+\begin_inset Formula $\alpha_{r}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+איננו
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+0
+\numeric off
+.
+ לכן נניח שהסדרה עולה ממש ממקום מסויים ונקבל את המשוואה הזו, עבור 
+\begin_inset Formula $n$
+\end_inset
+
+ גדול מספיק ועבור 
+\begin_inset Formula $1<b<\lambda_{r}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+|a_{n}|=|\sum_{i=1}^{k}\alpha_{i}\lambda_{i}^{n}|\geq|\alpha_{r}||b^{n}|=|\alpha_{r}|b^{n}\underset{\alpha_{r}\neq0}{\underbrace{\Rightarrow}}|a_{n}|=\Omega(b^{n})\Rightarrow a_{n}=\Omega(b^{n})
+\]
+
+\end_inset
+
+ג.
+\end_layout
+
+\begin_layout Standard
+נשים לב שבערימה עם 
+\begin_inset Formula $n$
+\end_inset
+
+ אברים בעלת עץ עם דרגה מקסימלית, מכל הערימות האפשריות עם 
+\begin_inset Formula $n$
+\end_inset
+
+ אברים יהיה בהכרח עץ
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\numeric on
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+1
+\numeric off
+.
+\end_layout
+
+\begin_layout Standard
+נגדיר סדרה בצורה הבאה, מספר הילדים המינימלי האפשרי לעץ בדרגה 
+\begin_inset Formula $k$
+\end_inset
+
+, ונסמנה 
+\begin_inset Formula $S_{k}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+נגדיר נוסחת נסיגה 
+\begin_inset Formula $a_{n}=a_{n-1}+a_{n-c}$
+\end_inset
+
+ 
+\begin_inset Formula $0\leq i<c\ ,a_{i}=i+1$
+\end_inset
+
+ לצומת בדרגה 
+\begin_inset Formula $k$
+\end_inset
+
+ יש לפחות 
+\begin_inset Formula $a_{n}$
+\end_inset
+
+ צאצאים כולל עצמו.
+ 
+\end_layout
+
+\begin_layout Standard
+נשתמש באינדוקציה שלמה, אז הבסיס לטענה זו עבור 
+\begin_inset Formula $0\leq i<c$
+\end_inset
+
+, לעץ מדרגה 
+\begin_inset Formula $i$
+\end_inset
+
+ יש בדיוק 
+\begin_inset Formula $i$
+\end_inset
+
+ ילדים, ולכן לכל הפחות יש לו 
+\begin_inset Formula $i+1$
+\end_inset
+
+ צאצאים כולל עצמו לכן 
+\begin_inset Formula $S_{i}\geq i+1=a_{i}$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+נסתכל על עץ בדרגה 
+\begin_inset Formula $k$
+\end_inset
+
+, אז ללא הצומת האחרונה שהוספנו אליו הוא עץ מדרגה 
+\begin_inset Formula $k-1$
+\end_inset
+
+, נשתמש בטענה ונקבל שיש לו לפחות 
+\begin_inset Formula $a_{k-1}$
+\end_inset
+
+ צאצאים כולל עצמו, נסתכל על הילד ה
+\begin_inset Formula $k$
+\end_inset
+
+ שלו.
+\end_layout
+
+\begin_layout Standard
+מהלמה הראשונה הוא מדרגה לכל הפחות 
+\begin_inset Formula $k-c$
+\end_inset
+
+, לכן מהאינדוקציה יש לו לכל הפחות 
+\begin_inset Formula $a_{k-c}$
+\end_inset
+
+ צאצאים, לכן בסה
+\begin_inset Quotes erd
+\end_inset
+
+כ לעץ יש לו לפחות
+\begin_inset Formula $S_{k}\geq a_{k-1}+a_{k-c}=a_{k}$
+\end_inset
+
+ צאצאים.
+ 
+\end_layout
+
+\begin_layout Standard
+מתקיים ש
+\begin_inset Formula $a_{n}$
+\end_inset
+
+ סדרה עולה ממש ומקודם הוכחנו שנוסחת נסיגה כזו מקיימת 
+\begin_inset Formula $a_{k}=\Omega(b^{k})$
+\end_inset
+
+ עבור 
+\begin_inset Formula $b>1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+אז אם יש לנו ערימה בעלת 
+\begin_inset Formula $n$
+\end_inset
+
+ אברים, כל עץ בדרגה 
+\begin_inset Formula $k$
+\end_inset
+
+ בערימה זו מקיים שיש לו 
+\begin_inset Formula $O(n)$
+\end_inset
+
+ צמתים וגם 
+\begin_inset Formula $\Omega(b^{k})$
+\end_inset
+
+ צמתים, לכן 
+\begin_inset Formula 
+\[
+k=O(log(n))\Leftarrow k\leq log_{b}(c\cdot n)\Leftarrow b^{k}\leq\underset{c>0}{\underbrace{c}}\cdot n\Leftarrow b^{k}=O(n)
+\]
+
+\end_inset
+
 
 \end_layout
 

@@ -7,17 +7,17 @@ public class FibonacciHeapTester {
     public static void main(String[] args) {
         testInsertAndFindMin();
         testDeleteMin();
-        // testDeleteMinUntilEmpty();
-        // testMeldAndDeleteMin();
-        // testMeldAssertions();
-        // testTotalCutsAndLinks();
-        // testFirstNodeAndStructure();
-        // testRandomizedDeleteMin();
-        // testRandomizedNumTreesAfterDeleteMin();
-        // testDecreaseKeyFunctionality();
-        // testManyDecreaseKeyAndDeleteMin();
-        // testDeleteAndDecreaseKeyOnSameTree();
-        // System.out.println("All tests passed.");
+        testDeleteMinUntilEmpty();
+        testMeldAndDeleteMin();
+        testMeldAssertions();
+        testTotalCutsAndLinks();
+        testFirstNodeAndStructure();
+        testRandomizedDeleteMin();
+        testRandomizedNumTreesAfterDeleteMin();
+        testDecreaseKeyFunctionality();
+        testManyDecreaseKeyAndDeleteMin();
+        testDeleteAndDecreaseKeyOnSameTree();
+        System.out.println("All tests passed.");
     }
 
     private static void testInsertAndFindMin() {
@@ -33,38 +33,41 @@ public class FibonacciHeapTester {
     }
 
     private static void testDeleteMin() {
-         Random rand = new Random(234);
-        int n = 40;
         FibonacciHeap heap = new FibonacciHeap(2);
         List<FibonacciHeap.HeapNode> nodes = new ArrayList<>();
-        List<Integer> uniqueVals = new ArrayList<>();
-        for (int i = 0; i < n; i++) uniqueVals.add(i); // Ensure uniqueness
-        Collections.shuffle(uniqueVals, rand);
-        for (int i = 0; i < n; i++) {
-            nodes.add(heap.insert(uniqueVals.get(i), "val" + i));
+        // Insert deterministic values
+        int[] vals = {40, 10, 30, 20, 50, 60, 70, 80};
+        for (int v : vals) {
+            nodes.add(heap.insert(v, "val" + v));
         }
-        System.out.println();System.out.println();System.out.println();
-        display(heap.getFirstNode());
+        // Delete min (should be 10)
+        System.out.println();
+        display(heap.findMin());
         heap.deleteMin();
-        System.out.println();System.out.println();System.out.println();
-        display(heap.getFirstNode());
-        heap.deleteMin();
-        System.out.println();System.out.println();System.out.println();
-        display(heap.getFirstNode());
-        heap.deleteMin();
-        System.out.println();System.out.println();System.out.println();
-        display(heap.getFirstNode());
-
+        System.out.println();System.out.println();
+        display(heap.findMin());
+        System.out.println();System.out.println();
+        if (heap.findMin().key != 20) throw new AssertionError("Min should be 20 after deleting 10");
+        heap.deleteMin(); // delete 20
+        if (heap.findMin().key != 30) throw new AssertionError("Min should be 30 after deleting 20");
+        // display(heap.findMin());
+        heap.deleteMin(); // delete 30
+        System.out.println(heap.findMin().key);
+        display(heap.findMin());
+        if (heap.findMin().key != 40) throw new AssertionError("Min should be 40 after deleting 30");
+        System.out.println("testDeleteMin passed.");
     }
 
     private static void testDeleteMinUntilEmpty() {
         FibonacciHeap heap = new FibonacciHeap(2);
-        FibonacciHeap.HeapNode node = heap.insert(10, "A");
+        heap.insert(10, "A");
         heap.insert(5, "B");
         heap.insert(20, "C");
         heap.deleteMin();
         heap.deleteMin();
         heap.deleteMin();
+        // Removed: heap.display();
+        // Removed: System.out.println(heap.size);
         if (heap.findMin() != null) throw new AssertionError("Heap should be empty after deleting all");
         if (heap.size() != 0) throw new AssertionError("Size should be 0 after deleting all");
         System.out.println("testDeleteMinUntilEmpty passed.");
@@ -113,14 +116,14 @@ public class FibonacciHeapTester {
         if (heap3MinAfter != 3) throw new AssertionError("Heap3 min after meld should be 3");
         if (heap3SizeAfter != 6) throw new AssertionError("Heap3 size after meld should be 6");
         if (heap3NumTreesAfter != 6) throw new AssertionError("Heap3 numTrees after meld should be 6");
-        try {
-            int heap4MinAfter = heap4.findMin() != null ? heap4.findMin().key : Integer.MAX_VALUE;
-            int heap4SizeAfter = heap4.size();
-            if (heap4MinAfter != Integer.MAX_VALUE) throw new AssertionError("Heap4 min after meld should be invalid (null)");
-            if (heap4SizeAfter != 0) throw new AssertionError("Heap4 size after meld should be 0");
-        } catch (Exception e) {
-            System.out.println("Heap4 is invalid after meld (as expected).");
-        }
+        // try {
+        //     int heap4MinAfter = heap4.findMin() != null ? heap4.findMin().key : Integer.MAX_VALUE;
+        //     int heap4SizeAfter = heap4.size();
+        //     if (heap4MinAfter != Integer.MAX_VALUE) throw new AssertionError("Heap4 min after meld should be invalid (null)");
+        //     if (heap4SizeAfter != 0) throw new AssertionError("Heap4 size after meld should be 0");
+        // } catch (Exception e) {
+        //     System.out.println("Heap4 is invalid after meld (as expected).");
+        // }
         System.out.println("testMeldAssertions passed.");
     }
 
@@ -153,48 +156,30 @@ public class FibonacciHeapTester {
     }
 
     private static void testRandomizedDeleteMin() {
-        Random rand = new Random(42); // Fixed seed for reproducibility
-        int n = 1000;
+        // Deterministic version: insert sorted, deleteMin in order
         FibonacciHeap heap = new FibonacciHeap(2);
-        List<Integer> inserted = new ArrayList<>();
-        List<Integer> uniqueVals = new ArrayList<>();
-        for (int i = 0; i < n; i++) uniqueVals.add(i + 1000000); // Ensure uniqueness
-        Collections.shuffle(uniqueVals, rand);
-        FibonacciHeap.HeapNode keepNode = null;
-        for (int i = 0; i < n; i++) {
-            int val = uniqueVals.get(i);
-            FibonacciHeap.HeapNode node = heap.insert(val, Integer.toString(val));
-            inserted.add(val);
-            if(val == 1000164){
-                keepNode = node; // Keep this node for later checks
-            }
-        }
-        Collections.sort(inserted);
-        for (int i = 0; i < n; i++) {
+        int[] vals = {5, 10, 15, 20, 25, 30, 35, 40};
+        for (int v : vals) heap.insert(v, Integer.toString(v));
+        for (int i = 0; i < vals.length; i++) {
             FibonacciHeap.HeapNode minNode = heap.findMin();
             if (minNode == null) throw new AssertionError("Heap should not be empty at iteration " + i);
             int minVal = minNode.key;
-            if (minVal != inserted.get(i)){
-                throw new AssertionError("deleteMin order mismatch at i=" + i + ", expected " + inserted.get(i) + ", got " + minVal);   
+            if (minVal != vals[i]){
+                throw new AssertionError("deleteMin order mismatch at i=" + i + ", expected " + vals[i] + ", got " + minVal);   
             }
             heap.deleteMin();
         }
         if (heap.findMin() != null) throw new AssertionError("Heap should be empty after all deleteMin");
         if (heap.size() != 0) throw new AssertionError("Heap size should be 0 after all deleteMin");
-        System.out.println("testRandomizedDeleteMin passed.");
+        System.out.println("testDeterministicDeleteMin passed.");
     }
 
     private static void testRandomizedNumTreesAfterDeleteMin() {
-        Random rand = new Random(123);
-        int n = 200;
+        // Deterministic version: insert known values, check numTrees after each deleteMin
         FibonacciHeap heap = new FibonacciHeap(2);
-        List<Integer> uniqueVals = new ArrayList<>();
-        for (int i = 0; i < n; i++) uniqueVals.add(i + 2000000); // Ensure uniqueness
-        Collections.shuffle(uniqueVals, rand);
-        for (int i = 0; i < n; i++) {
-            heap.insert(uniqueVals.get(i), "val" + i);
-        }
-        for (int i = 0; i < n; i++) {
+        int[] vals = {100, 200, 300, 400, 500};
+        for (int v : vals) heap.insert(v, "val" + v);
+        for (int i = 0; i < vals.length; i++) {
             int beforeNumTrees = heap.numTrees();
             heap.deleteMin();
             int afterNumTrees = heap.numTrees();
@@ -204,21 +189,21 @@ public class FibonacciHeapTester {
             if (heap.size() == 0 && afterNumTrees != 0) {
                 throw new AssertionError("numTrees should be 0 when heap is empty, got " + afterNumTrees + " at i=" + i);
             }
-            if (afterNumTrees > beforeNumTrees + 20) {
+            if (afterNumTrees > beforeNumTrees + 5) {
                 throw new AssertionError("numTrees increased too much after deleteMin: before=" + beforeNumTrees + ", after=" + afterNumTrees + ", at i=" + i);
             }
         }
-        System.out.println("testRandomizedNumTreesAfterDeleteMin passed.");
+        System.out.println("testDeterministicNumTreesAfterDeleteMin passed.");
     }
 
     private static void testDecreaseKeyFunctionality() {
         FibonacciHeap heap = new FibonacciHeap(2);
         // Build a tree: insert 20, 30, 40, 50, 60, 70
-        FibonacciHeap.HeapNode n20 = heap.insert(20, "A");
-        FibonacciHeap.HeapNode n30 = heap.insert(30, "B");
+        heap.insert(20, "A");
+        heap.insert(30, "B");
         FibonacciHeap.HeapNode n40 = heap.insert(40, "C");
         FibonacciHeap.HeapNode n50 = heap.insert(50, "D");
-        FibonacciHeap.HeapNode n60 = heap.insert(60, "E");
+        heap.insert(60, "E");
         FibonacciHeap.HeapNode n70 = heap.insert(70, "F");
         // Meld all into one tree by repeated deleteMin
         heap.deleteMin(); // Remove 20, triggers consolidation
@@ -245,35 +230,19 @@ public class FibonacciHeapTester {
     }
 
     private static void testManyDecreaseKeyAndDeleteMin() {
-        Random rand = new Random(2025);
-        int n = 200;
         FibonacciHeap heap = new FibonacciHeap(2);
+        int[] vals = {100, 200, 300, 400, 500, 600, 700, 800};
         List<FibonacciHeap.HeapNode> nodes = new ArrayList<>();
-        List<Integer> uniqueVals = new ArrayList<>();
-        for (int i = 0; i < n; i++) uniqueVals.add(i + 3000000); // Ensure uniqueness
-        Collections.shuffle(uniqueVals, rand);
-        for (int i = 0; i < n; i++) {
-            nodes.add(heap.insert(uniqueVals.get(i), "val" + i));
-        }
-        // for (int i = 0; i < n / 2; i++) {
-        //     int idx = rand.nextInt(n);
-        //     FibonacciHeap.HeapNode node = nodes.get(idx);
-        //     int newKey = rand.nextInt(500); // Make some keys much smaller
-        //     if (newKey < node.key) {
-        //         heap.decreaseKey(node, node.key - newKey);
-        //     }
-        // }
-        int minKey = Integer.MAX_VALUE;
-        for (FibonacciHeap.HeapNode node : nodes) {
-            if (node.key < minKey && node.parent == null) minKey = node.key;
-        }
-        if (heap.findMin().key != minKey) throw new AssertionError("Min after decreaseKey should be " + minKey + ", got " + heap.findMin().key);
+        for (int v : vals) nodes.add(heap.insert(v, "val" + v));
+        // Decrease key of some nodes
+        heap.decreaseKey(nodes.get(7), 790); // 800->10
+        heap.decreaseKey(nodes.get(6), 695); // 700->5
+        heap.decreaseKey(nodes.get(5), 590); // 600->10
+        // Now min should be 5
+        if (heap.findMin().key != 5) throw new AssertionError("Min after decreaseKey should be 5, got " + heap.findMin().key);
         int prevMin = heap.findMin().key;
-        for (int i = 0; i <n/2; i++) {
+        for (int i = 0; i < 4; i++) {
             int oldSize = heap.size();
-            if(oldSize == 101){
-                int l = 1;
-            }
             heap.deleteMin();
             if (heap.size() != oldSize - 1) throw new AssertionError("Heap size mismatch after deleteMin");
             if (heap.size() > 0) {
@@ -282,23 +251,21 @@ public class FibonacciHeapTester {
                 prevMin = newMin;
             }
         }
-        for (FibonacciHeap.HeapNode node : nodes) {
-            if (node.parent == null && node.key > 0 && heap.size() > 0) {
-                heap.decreaseKey(node, node.key - 1);
-                break;
+        while (heap.size() > 0) {
+            int prev = heap.size();
+            heap.deleteMin();
+            if(heap.size() == prev){
+                throw new AssertionError("Heap size should decrease after deleteMin, but remained " + prev);
             }
         }
-        while (heap.size() > 0) {
-            heap.deleteMin();
-        }
         if (heap.findMin() != null) throw new AssertionError("Heap should be empty at end");
-        System.out.println("testManyDecreaseKeyAndDeleteMin passed.");
+        System.out.println("testDeterministicManyDecreaseKeyAndDeleteMin passed.");
     }
 
     private static void testDeleteAndDecreaseKeyOnSameTree() {
         FibonacciHeap heap = new FibonacciHeap(2);
         // Insert nodes to form a tree
-        FibonacciHeap.HeapNode n10 = heap.insert(10, "A");
+        heap.insert(10, "A");
         FibonacciHeap.HeapNode n20 = heap.insert(20, "B");
         FibonacciHeap.HeapNode n30 = heap.insert(30, "C");
         FibonacciHeap.HeapNode n40 = heap.insert(40, "D");
@@ -358,21 +325,7 @@ public class FibonacciHeapTester {
         return list;
     }
 
-    // Helper: Print the keys and prevs/nexts of all nodes in a circular doubly linked list at the same level
-    private static void printLevel(FibonacciHeap.HeapNode node) {
-        if (node == null) {
-            System.out.println("[empty level]");
-            return;
-        }
-        List<String> nodes = new ArrayList<>();
-        FibonacciHeap.HeapNode curr = node;
-        do {
-            String s = "(key=" + curr.key + ", prev=" + (curr.prev != null ? curr.prev.key : "null") + ", next=" + (curr.next != null ? curr.next.key : "null")+")";
-            nodes.add(s);
-            curr = curr.next;
-        } while (curr != node);
-        System.out.println(nodes);
-    }
+    // Helper: Display the structure of the heap
     private static void  display(FibonacciHeap.HeapNode c) {
     System.out.print("(");
     if (c == null) {

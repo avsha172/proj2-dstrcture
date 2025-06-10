@@ -81,7 +81,9 @@ public class FibonacciHeap
 		// Edge case 1: Heap is empty
 	    if (min == null) {
 			if(size != 0){
+				System.err.println(size);
 				System.err.println("heap should be empty but it actually isnt");
+				throw new AssertionError("Min should be 20 after deleting 10");
 			}
 	        return 0;
 	    }
@@ -147,12 +149,12 @@ public class FibonacciHeap
 		
 	    // Set new min (will be fixed in consolidation)
 	    // If heap is now empty, set min to null
-		int links = consolidate2();
+		int links = consolidate();
 		totalLinks += links;
 		return links;
 	}
 
-	public int consolidate2() {
+	public int consolidate() {
 		int maxDegree = (int) Math.ceil(2 * Math.log(size) + 2);
 		// we will not have a runtimes error of buffer overflow, because its not to hard to prove that the max degree is at most 8*log(n)+2 for every c, in fact we kind of prove in the theortical part where we reach the recurrence relation a_n=a_n-1+a_n-c and we proved max degree is smaller than a_(n+2) and a(n+2) is big Omeaga of b^(n+2) for some 2>b>1. even though i am pretty sure we can use 2*log(n)+2, i will use 8*log(n)+2 to be on the safe side
 		int links = 0;
@@ -385,7 +387,7 @@ public class FibonacciHeap
 	 */
 	public int size()
 	{
-		return size; // should be replaced by student code
+		return size;
 	}
 
 
@@ -396,7 +398,7 @@ public class FibonacciHeap
 	 */
 	public int numTrees()
 	{
-		return numTrees; // should be replaced by student code
+		return numTrees;
 	}
 
 	private void display(HeapNode c) {
