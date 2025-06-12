@@ -134,12 +134,11 @@ public class Experiment {
         FibonacciHeap heap = heapAndNodes.heap;
         FibonacciHeap.HeapNode[] nodes = heapAndNodes.nodes;
         long startTime = System.currentTimeMillis();
-        for (int i = n-1; heap.size() > 46; i--) {
-            heap.deleteMin();
-            if(heap.size() == 46){
-                break;
-            }
+        heap.deleteMin();
+        int i =n-1;
+        while(heap.size() > 46) {
             heap.delete(nodes[i]);
+            i--;
         }
         long endTime = System.currentTimeMillis();
         return new ExpResult(
@@ -156,14 +155,13 @@ public class Experiment {
         FibonacciHeap heap = heapAndNodes.heap;
         FibonacciHeap.HeapNode[] nodes = heapAndNodes.nodes;
         long startTime = System.currentTimeMillis();
-        for (int i = n-1; heap.size() > 46; i--) {
-            heap.deleteMin();
-            if(heap.size() == 46){
-                break;
-            }
+        heap.deleteMin();
+        int i =n-1;
+        while(i >= 46) {
             heap.decreaseKey(nodes[i], nodes[i].key);
-            heap.deleteMin();
+            i--;
         }
+        heap.deleteMin();
         long endTime = System.currentTimeMillis();
         return new ExpResult(
             endTime - startTime,
@@ -179,7 +177,6 @@ public class Experiment {
         Random rand = new Random();
         FibonacciHeap heap = new FibonacciHeap(c);
         FibonacciHeap.HeapNode[] nodes = new FibonacciHeap.HeapNode[n];
-        // Random rand = new Random(seed);
         List<Integer> keyList = new ArrayList<>();
         for (int i = 1; i <= n; i++) {
             keyList.add(i);

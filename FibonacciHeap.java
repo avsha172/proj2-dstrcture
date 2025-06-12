@@ -155,8 +155,6 @@ public class FibonacciHeap
 	}
 
 	public int consolidate() {
-		int maxDegree = (int) Math.ceil(2 * Math.log(size) + 2);
-		// we will not have a runtimes error of buffer overflow, because its not to hard to prove that the max degree is at most 8*log(n)+2 for every c, in fact we kind of prove in the theortical part where we reach the recurrence relation a_n=a_n-1+a_n-c and we proved max degree is smaller than a_(n+2) and a(n+2) is big Omeaga of b^(n+2) for some 2>b>1. even though i am pretty sure we can use 2*log(n)+2, i will use 8*log(n)+2 to be on the safe side
 		int links = 0;
 		// Step 1: Collect all roots into a list before mutating the root list
 		HeapNode[] rootNodes = new HeapNode[numTrees];
@@ -169,15 +167,21 @@ public class FibonacciHeap
 			System.err.println("curr is not equal to min, something went wrong");
 		}
 		// Step 2: Consolidate using the collected roots
-		HeapNode[] bucket = new HeapNode[maxDegree];
+		ArrayList<HeapNode> bucket = new ArrayList<>();
 		for (HeapNode node : rootNodes) {
 			curr = node;
 			int d = curr.rank;
-			if(bucket[d] == curr) {
+			if(d>= bucket.size()) {
+				// Extend the bucket to accommodate the rank
+				for (int j = bucket.size(); j <= d; j++) {
+					bucket.add(null);
+				}
+			}
+			if(bucket.get(d) == curr) {
 				break;
 			}
-			while (bucket[d] != null) {
-				HeapNode y = bucket[d];
+			while (bucket.get(d) != null) {
+				HeapNode y = bucket.get(d);
 				if (curr.key > y.key) {
 					HeapNode temp = curr;
 					curr = y;
@@ -185,11 +189,16 @@ public class FibonacciHeap
 				}
 				removeNode(y);
 				curr.addChild(y);
-				bucket[d] = null;
+				bucket.set(d, null);
 				d++;
 				links++;
+				if(d>=bucket.size()) {
+
+					bucket.add(null);
+					break; // Break if we need to extend the bucket
+				}
 			}
-			bucket[d] = curr;
+			bucket.set(d, curr);
 		}
 		// Step 3: Rebuild root list & discover new min
 		numTrees = 0;
@@ -390,7 +399,6 @@ public class FibonacciHeap
 		return size;
 	}
 
-
 	/**
 	 * 
 	 * Return the number of trees in the heap.
@@ -401,7 +409,7 @@ public class FibonacciHeap
 		return numTrees;
 	}
 
-	private void display(HeapNode c) {
+	public void display(HeapNode c) {
     System.out.print("(");
     if (c == null) {
       System.out.print(")");
