@@ -1,9 +1,3 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.swing.ToolTipManager;
-
 /**
  * FibonacciHeap
  *
@@ -79,6 +73,9 @@ public class FibonacciHeap
 	public int deleteMin()
 	{
 		// Edge case 1: Heap is empty
+		if (Invalidate == true) {
+			return 0; // Invalid heap, cannot perform operation
+		}
 	    if (min == null) {
 			if(size != 0){
 				System.err.println(size);
@@ -133,7 +130,7 @@ public class FibonacciHeap
 				min = start; // If this was the only root node, set min to the first child
 			}
 			numTrees += oldMin.rank-1; // Increase numTrees by the number of children added
-			totalCuts += oldMin.rank; // Count the cuts made when removing children
+			// dont add cuts, speficily asked not to.
 	        oldMin.child = null; // Clear the child pointer of oldMin
 	        oldMin.rank = 0; // Reset rank since we are removing children
 		}
@@ -167,7 +164,7 @@ public class FibonacciHeap
 			System.err.println("curr is not equal to min, something went wrong");
 		}
 		// Step 2: Consolidate using the collected roots
-		ArrayList<HeapNode> bucket = new ArrayList<>();
+		java.util.ArrayList<HeapNode> bucket = new java.util.ArrayList<>();
 		for (HeapNode node : rootNodes) {
 			curr = node;
 			int d = curr.rank;
@@ -262,6 +259,7 @@ public class FibonacciHeap
 				if (x.key < min.key) {
 					min = x; // Update min if necessary
 				}
+				totalCuts += cuts; // Update total cuts
 				return cuts; // Return the number of cuts made
 			}
 			return 0; // No cuts made
@@ -285,7 +283,9 @@ public class FibonacciHeap
 		}
 		removeNode(x);
 		parent.rank--;
-		parent.lostChildren++;
+		if(parent.parent != null){
+			parent.lostChildren++;
+		}
 		// Add x to the root list
 		x.next = x;
 		x.prev = x;
@@ -306,6 +306,9 @@ public class FibonacciHeap
 	 */
 	public int delete(HeapNode x) 
 	{   
+		if (Invalidate == true) {
+			return 0; // Invalid heap, cannot perform operation
+		}
 		HeapNode par = x.parent;
 		int cuts = decreaseKey(x, x.key);
 		int links = deleteMin();

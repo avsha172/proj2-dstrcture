@@ -42,16 +42,16 @@ public class Experiment {
 
     public static void printTable(String title, List<ExpTableRow> rows) {
         System.out.println("\n" + title);
-        System.out.printf("%-5s | %-12s | %-12s | %-12s | %-12s | %-12s | %-12s\n", "c", "Time(ms)", "FinalSize", "NumTrees", "NumCuts", "NumLinks", "NumRoots");
+        System.out.printf("%-5s | %-12s | %-12s | %-12s | %-12s | %-12s \n", "c", "Time(ms)", "FinalSize", "NumTrees", "NumCuts", "NumLinks" );
         for (ExpTableRow row : rows) {
-            System.out.printf("%-5d | %-12.2f | %-12.2f | %-12.2f | %-12.2f | %-12.2f | %-12.2f\n",
-                row.c, row.timeMs, row.finalSize, row.numTrees, row.numCuts, row.numLinks, row.numRoots);
+            System.out.printf("%-5d | %-12.2f | %-12.2f | %-12.2f | %-12.2f | %-12.2f\n",
+                row.c, row.timeMs, row.finalSize, row.numTrees, row.numCuts, row.numLinks);
         }
     }
 
     public static void main(String[] args) {
         int[] cLst = {2,3,4,10,20,100,1000,5000};
-        int numRuns = 1;
+        int numRuns = 20;
         List<ExpTableRow> exp1Rows = new ArrayList<>();
         List<ExpTableRow> exp2Rows = new ArrayList<>();
         // Run exp1 for all c
@@ -174,6 +174,7 @@ public class Experiment {
     }
 
     private static heapAndNodes createHeap(int c) {
+        // int seed = 3215; // Fixed seed for reproducibility
         Random rand = new Random();
         FibonacciHeap heap = new FibonacciHeap(c);
         FibonacciHeap.HeapNode[] nodes = new FibonacciHeap.HeapNode[n];
